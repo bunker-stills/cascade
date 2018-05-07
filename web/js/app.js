@@ -226,7 +226,7 @@ function update_component_ui(component) {
         group_row.append(column);
         $("#groups").append(group_row);
 
-        tinysort('#groups>row', '.group');
+        tinysort('#groups>.row', '.group');
     }
 
     // Create our component UI
