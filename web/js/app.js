@@ -85,7 +85,7 @@ function connect_mqtt_client(username, password) {
 
 function createComponentGroupName(componentGroup)
 {
-    return componentGroup.replace(" ", "_");
+    return componentGroup.replace(/\s/g, "_");
 }
 
 function reset_ui() {
@@ -236,7 +236,7 @@ function update_component_ui(component) {
 
         var component_label_row = $('<div class="row">' +
             '<div class="ten columns">' +
-            '<label class="component_label" id="component_label_' + component.id + '"></label>' +
+            '<label class="component_label" id="component_label_' + component.id + '" data-display-order="' + component.display_order + '"></label>' +
             '</div>' +
             '<div class="two columns component-toolbar">' +
             '<i class="fa fa-area-chart series-toggle" onclick="toggle_series(\'' + component.id + '\');"></i>' +
@@ -331,7 +331,7 @@ function update_component_ui(component) {
 
         $("#components").append(component_row);
 
-        tinysort('#components>row', 'label.component_label');
+        tinysort('#components>.row', {selector:'label',attr:'data-display-order'}, 'label.component_label');
     }
 
     component_field.prop("disabled", component.read_only);
