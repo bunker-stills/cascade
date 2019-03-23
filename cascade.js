@@ -54,6 +54,7 @@ var cascade = function (config) {
     this.config = config;
 
     this.console_logger = new (winston.Logger)({
+        levels: winston.config.syslog.levels,
         transports: [
             new (winston.transports.Console)({
                 timestamp: true,
@@ -413,6 +414,12 @@ cascade.prototype.log_info = function (message) {
     this.console_logger.info(message);
     this.publish_mqtt_message("log/info", "(info) " + message);
     this.emit("log_info", message);
+};
+
+cascade.prototype.log_notice = function (message) {
+    this.console_logger.notice(message);
+    this.publish_mqtt_message("log/notice", "(notice) " + message);
+    this.emit("log_notice", message);
 };
 
 cascade.prototype.log_error = function (error) {
