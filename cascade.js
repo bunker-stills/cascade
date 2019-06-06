@@ -429,7 +429,7 @@ cascade.prototype.log_error = function (error) {
 };
 
 cascade.prototype.log_warning = function (message) {
-    this.console_logger.warn(message);
+    this.console_logger.warning(message);
     this.publish_mqtt_message("log/warning", "(warning) " + message);
     this.emit("log_warning", message);
 };
