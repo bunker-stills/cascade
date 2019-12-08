@@ -252,17 +252,44 @@ var cascade = function (config) {
         });
 
         // Setup our run loop
-        setInterval(function () {
+        if (_.isNumber(config.run_loop_time_in_seconds)) {
+            setInterval(function () {
 
-            _.each(self.processes, function (ps) {
+                _.each(self.processes, function (ps) {
 
-                if (_.isFunction(ps.process_instance.loop)) {
-                    ps.process_instance.loop.call(ps.process_instance, ps.cascade_context);
+                    if (_.isFunction(ps.process_instance.loop)) {
+                        ps.process_instance.loop.call(
+                            ps.process_instance, ps.cascade_context);
+                    }
+
+                });
+
+            }, config.run_loop_time_in_seconds * 1000);
+
+        } else if (_.isString(config.run_loop_time_in_seconds)) {
+
+            var loop_time_component;
+            var loop_time_ms = 1000;
+
+            setTimeout(function do_loop() {
+
+                _.each(self.processes, function (ps) {
+
+                    if (_.isFunction(ps.process_instance.loop)) {
+                        ps.process_instance.loop.call(
+                            ps.process_instance, ps.cascade_context);
+                    }
+                });
+
+                loop_time_component = self.components[config.run_loop_time_in_seconds];
+                if (loop_time_component) {
+                    loop_time_ms = (loop_time_component.value || 1) * 1000;
                 }
 
-            });
+                setTimeout(do_loop, loop_time_ms);
 
-        }, config.run_loop_time_in_seconds * 1000);
+            }, loop_time_ms);
+        }
     }
 
     this.mqtt_server = new mosca.Server({
