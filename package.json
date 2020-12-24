@@ -9,6 +9,7 @@
   "author": "Jim Heising <jheising@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "jsonschema": "1.2.5",
     "jsonfile": "2.3.1",
     "mkdir-p": "0.0.7",
     "mosca": "^2.8.1",
